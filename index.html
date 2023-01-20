@@ -1,0 +1,84 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Preconnects for Google Fonts-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Google font for Materialize CSS icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Google font for headings -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <!-- Compiled and minified Materialize CSS styles -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <title>Dad Laughs</title>
+</head>
+
+<body>
+  <!-- Title hero section -->
+  <header id="hero" class="teal white-text center-align">
+    <h1>Dad Laughs</h1>
+    <h6>~ Guaranteed to hit ya right in the funny bone! ~</h6>
+  </header>
+
+  <!-- Container for page content -->
+  <main class="container">
+
+    <!-- Introductory section with random dad joke -->
+    <section class="row random-joke">
+      <div class="col s12">
+        <h2 class="center-align teal-text text-lighten-1">Haz a random dad joke:</h2>
+        <blockquote id="random_joke" class="teal-text"></blockquote>
+      </div>
+    </section>
+
+    <!-- Form for searching dad joke database -->
+    <section class="row search-jokes">
+      <h2 class="center-align teal-text text-lighten-1">Search for specific terms:</h2>
+      <form id="search_form" class="col s12">
+        <div class="input-field">
+          <input placeholder="Search dad jokes..." id="search_input" type="text">
+        </div>
+        <button class="btn waves-effect waves-light mt3" type="submit" name="action">
+          <i class="material-icons left">search</i> Search Dad Jokes
+        </button>
+      </form>
+    </section>
+
+    <!-- Initialize an empty UL element for populating search results-->
+    <ul id="joke_list" class="collection">
+      <li class="min-height-300 justify-center align-center display-none">
+        <div class="preloader-wrapper small active">
+          <div class="spinner-layer spinner-teal-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <!-- End of container for main content -->
+  </main>
+
+  <!-- Simple footer section -->
+  <footer class="teal white-text">
+    <h6 class="center-align">Thanks, Dad! &copy; Dylan Martin</h6>
+  </footer>
+
+  <!-- Compiled and minified Materialize CSS script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="./assets/js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+html {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  min-height: 100%;
+  line-height: 1;
+  font-family: sans-serif;
+}
+
+h1, h2 {
+  font-family: 'Fredoka One', "Comic Sans MS", "Chalkboard SE", "Comic Neue";
+  letter-spacing: .02em;
+}
+
+header {
+  margin-bottom: 80px;
+  padding: 80px 10px 100px;
+}
+
+header>h6 {
+  font-style: italic;
+  letter-spacing: .1em;
+  margin-top: -15px;
+}
+
+main {
+  padding-bottom: 100px;
+}
+
+footer {
+  padding: 30px 10px;
+}
+
+footer>h6 {
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.display-none {
+  display: none;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.min-height-300 {
+  min-height: 300px;
+}
+
+.random-joke {
+  margin-bottom: 80px
+}
+
+#random_joke {
+  /* .teal.lighten-3 class from Materialize CSS */
+  border-left-color: #80cbc4;
+  margin-top: 40px;
+  padding: 20px 30px;
+}
+
+.search-jokes {
+  margin-bottom: 50px;
+}
+
+#search_input {
+  font-size: 170%;
+  padding-left: 8px;
+}
+
+.input-field>input::placeholder {
+  /* .teal.lighten-4 class from Materialize CSS */
+  color: #b2dfdb;
+}
