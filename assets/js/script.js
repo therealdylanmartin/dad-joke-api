@@ -6,6 +6,7 @@ const searchJokesEndpoint = `${randomJokeEndpoint}search`;
 
 // Select elements
 const randomJokeElem = document.getElementById('random_joke');
+const jokeButtonElem = document.getElementById('joke_button');
 const searchFormElem = document.getElementById('search_form');
 const searchInputElem = document.getElementById('search_input');
 const termBtnsBoxElem = document.getElementById('term_buttons');
@@ -58,6 +59,13 @@ const renderRandomJoke = (joke) => {
   h4Elem.textContent = joke;
   // Render random joke in blockqoute section
   randomJokeElem.append(h4Elem);
+}
+
+const getAnotherRandomJoke = () => {
+  // Remove current rendered joke
+  randomJokeElem.removeChild(randomJokeElem.childNodes[0]);
+  // Run function to get random joke
+  getRandomDadJoke();
 }
 
 const searchDadJokes = (event) => {
@@ -176,6 +184,8 @@ const renderListItem = (joke) => {
 //////////////////////// Event Listeners
 
 searchFormElem.addEventListener('submit', searchDadJokes);
+
+jokeButtonElem.addEventListener('click', getAnotherRandomJoke);
 
 //////////////////////// Init
 
