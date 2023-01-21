@@ -4,20 +4,42 @@
 const randomJokeEndpoint = 'https://icanhazdadjoke.com/';
 const searchJokesEndpoint = `${randomJokeEndpoint}search`;
 
-// Select elements for interaction
+// Select elements
 const randomJokeElem = document.getElementById('random_joke');
 const searchFormElem = document.getElementById('search_form');
 const searchInputElem = document.getElementById('search_input');
 const jokeListElem = document.getElementById('joke_list');
 
+// Initialize global terms array
+let searchTerms = [];
+
 //////////////////////// Functions
+
+const getLocalStorageTerms = () => {
+  // Get local storage terms
+  const localStorageTerms = localStorage.getItem('jokeSearchTerms');
+  // If terms are found, set searchTerms array to local storage
+  if (localStorageTerms) {
+    searchTerms = JSON.parse(localStorageTerms);
+  }
+}
+
+const setLocalStorageTerms = (term) => {
+  // Add the term to the end of the terms array
+  searchTerms.push(term);
+  // Set the stringified terms array to localStorage
+  localStorage.setItem('jokeSearchTerms', JSON.stringify(searchTerms));
+}
 
 const getRandomDadJoke = () => {
   // Fetch random dad joke, necassary to set headers to accept json
   fetch(randomJokeEndpoint, { headers: { 'Accept': 'application/json' } })
+    // Convert json
     .then(response => response.json())
+    // Render the random joke
     .then(data => renderRandomJoke(data.joke))
-    .catch(error => window.alert(error))
+    // Catch error if fetch fails
+    .catch(error => console.log(error))
 }
 
 const renderRandomJoke = (joke) => {
@@ -33,10 +55,10 @@ const searchDadJokes = (event) => {
   // prevent default form submitting behavior
   event.preventDefault();
   // Get variable for input value
-  const terms = searchInputElem.value;
+  const term = searchInputElem.value;
 
-  // Check if terms are empty and return with message
-  if (!terms) {
+  // Check if term input is empty and return with message
+  if (!term) {
     window.alert('You didn\'t enter any terms!');
     return;
   }
@@ -44,10 +66,11 @@ const searchDadJokes = (event) => {
   // Empty the input
   searchInputElem.value = '';
   // Use search API and query terms to build endpoint URL
-  const queryEndpoint = `${searchJokesEndpoint}?term=${terms}`;
+  const queryEndpoint = `${searchJokesEndpoint}?term=${term}`;
 
-  // Fetch the jokes
+  // Fetch the jokes, necassary to set headers to accept json
   fetch(queryEndpoint, { headers: { 'Accept': 'application/json' } })
+    // Convert json
     .then(response => response.json())
     .then(data => {
       // Check if results are empty and return with message
@@ -56,10 +79,13 @@ const searchDadJokes = (event) => {
         return;
       }
 
+      // Add search term to local storage
+      setLocalStorageTerms(term);
       // If results aren't empty, render jokes
       renderJokeList(data.results);
     })
-    .catch(error => window.alert(error))
+    // Catch error if fetch fails
+    .catch(error => console.log(error))
 }
 
 const renderJokeList = (jokesArray) => {
@@ -96,3 +122,5 @@ searchFormElem.addEventListener('submit', searchDadJokes);
 //////////////////////// Init
 
 getRandomDadJoke();
+
+getLocalStorageTerms();
