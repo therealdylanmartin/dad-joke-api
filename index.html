@@ -15,13 +15,13 @@
   <!-- Compiled and minified Materialize CSS styles -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="./assets/css/styles.css">
-  <title>Dad Laughs</title>
+  <title>Dad Laffs</title>
 </head>
 
 <body>
   <!-- Title hero section -->
   <header id="hero" class="teal white-text center-align">
-    <h1>Dad Laughs</h1>
+    <h1>Dad Laffs</h1>
     <h6>~ Guaranteed to hit ya right in the funny bone! ~</h6>
   </header>
 
@@ -40,13 +40,15 @@
     <section class="row search-jokes">
       <h2 class="center-align teal-text text-lighten-1">Search for specific terms:</h2>
       <form id="search_form" class="col s12">
-        <div class="input-field">
-          <input placeholder="Search dad jokes..." id="search_input" type="text">
+        <div class="input-field-large">
+          <input id="search_input" type="text" placeholder="Search dad jokes...">
         </div>
         <button class="btn waves-effect waves-light mt3" type="submit" name="action">
           <i class="material-icons left">search</i> Search Dad Jokes
         </button>
       </form>
+      <!-- Initialize empty div for previous terms buttons -->
+      <div id="term_buttons" class="pill-btn__box right"></div>
     </section>
 
     <!-- Initialize an empty UL element for populating search results-->
