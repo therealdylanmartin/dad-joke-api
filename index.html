@@ -40,13 +40,15 @@
     <section class="row search-jokes">
       <h2 class="center-align teal-text text-lighten-1">Search for specific terms:</h2>
       <form id="search_form" class="col s12">
-        <div class="input-field">
-          <input placeholder="Search dad jokes..." id="search_input" type="text">
+        <div class="input-field-large">
+          <input id="search_input" type="text" placeholder="Search dad jokes...">
         </div>
         <button class="btn waves-effect waves-light mt3" type="submit" name="action">
           <i class="material-icons left">search</i> Search Dad Jokes
         </button>
       </form>
+      <!-- Initialize empty div for previous terms buttons -->
+      <div id="term_buttons" class="pill-btn__box right"></div>
     </section>
 
     <!-- Initialize an empty UL element for populating search results-->

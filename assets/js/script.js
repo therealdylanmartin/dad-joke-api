@@ -8,9 +8,10 @@ const searchJokesEndpoint = `${randomJokeEndpoint}search`;
 const randomJokeElem = document.getElementById('random_joke');
 const searchFormElem = document.getElementById('search_form');
 const searchInputElem = document.getElementById('search_input');
+const termBtnsBoxElem = document.getElementById('term_buttons');
 const jokeListElem = document.getElementById('joke_list');
 
-// Initialize global terms array
+// Initialize global array for local storage terms
 let searchTerms = [];
 
 //////////////////////// Functions
@@ -21,12 +22,20 @@ const getLocalStorageTerms = () => {
   // If terms are found, set searchTerms array to local storage
   if (localStorageTerms) {
     searchTerms = JSON.parse(localStorageTerms);
+    renderTermBtns();
   }
 }
 
-const setLocalStorageTerms = (term) => {
+const addTermToLocalStorage = (term) => {
   // Add the term to the end of the terms array
   searchTerms.push(term);
+  // Set the stringified terms array to localStorage
+  localStorage.setItem('jokeSearchTerms', JSON.stringify(searchTerms));
+}
+
+const removeTermFromLocalStorage = (term) => {
+  // set the search terms array to filter out term
+  searchTerms = searchTerms.filter(item => item !== term);
   // Set the stringified terms array to localStorage
   localStorage.setItem('jokeSearchTerms', JSON.stringify(searchTerms));
 }
@@ -63,8 +72,13 @@ const searchDadJokes = (event) => {
     return;
   }
 
+  // Fetch jokes based on searched term
+  getSearchedJokes(term);
   // Empty the input
   searchInputElem.value = '';
+}
+
+const getSearchedJokes = (term) => {
   // Use search API and query terms to build endpoint URL
   const queryEndpoint = `${searchJokesEndpoint}?term=${term}`;
 
@@ -79,13 +93,57 @@ const searchDadJokes = (event) => {
         return;
       }
 
-      // Add search term to local storage
-      setLocalStorageTerms(term);
+      // Check that term isn't a duplicate in storage
+      if (!searchTerms.includes(term)) {
+        // Add search term to local storage
+        addTermToLocalStorage(term);
+      }
       // If results aren't empty, render jokes
       renderJokeList(data.results);
     })
     // Catch error if fetch fails
     .catch(error => console.log(error))
+}
+
+const renderTermBtns = () => {
+  // Loop search terms to get each term previously used
+  for (let term of searchTerms) {
+    // Initialize empty button element 
+    const buttonElem = document.createElement('button');
+    // Add Materialize CSS classes to the button
+    buttonElem.setAttribute('class', 'btn-small pink lighten-3 teal-text text-darken-2');
+    // Add data attribute to store term info
+    buttonElem.dataset.term = term;
+    // Set the inner HTML with term text and a 'close' icon
+    buttonElem.innerHTML = `${term} <i class="material-icons right">close</i>`;
+    // Append the button to the term buttons box
+    termBtnsBoxElem.append(buttonElem);
+    // Add event listener to button
+    buttonElem.addEventListener('click', searchPreviousTerm);
+  }
+}
+
+const searchPreviousTerm = (event) => {
+  // Initialize term to be assigned when we verify target clicked
+  let term;
+  // Get the element clicked
+  const targetClicked = event.target;
+  // If target matches button, perform search of that term
+  if (targetClicked.matches('button')) {
+    // Set term to data attribute
+    term = targetClicked.dataset.term;
+    // Fetch jokes based on term
+    getSearchedJokes(term);
+    // Change button display to none
+    targetClicked.classList.add('display-none');
+  } else {
+    // Set term to parent node data attribute
+    term = targetClicked.parentNode.dataset.term;
+    // Else we assume the 'X' was clicked and remove that term from local storage
+    removeTermFromLocalStorage(term);
+    // Change parent button display to none
+    targetClicked.parentNode.classList.add('display-none');
+  }
 }
 
 const renderJokeList = (jokesArray) => {

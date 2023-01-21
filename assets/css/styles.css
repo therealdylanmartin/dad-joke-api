@@ -86,3 +86,20 @@ footer>h6 {
   /* .teal.lighten-4 class from Materialize CSS */
   color: #b2dfdb;
 }
+
+.pill-btn__box {
+  margin-top: -51px;
+}
+
+.pill-btn__box>.btn-small {
+  border-radius: 16px;
+  padding: 0 12px;
+}
+
+.pill-btn__box>.btn-small:not(:last-child) {
+  margin-right: 6px;
+}
+
+.pill-btn__box i.right {
+  margin-left: 10px;
+}
