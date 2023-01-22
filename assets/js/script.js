@@ -37,6 +37,8 @@ const addTermToLocalStorage = (term) => {
   searchTerms.push(term);
   // Set the stringified terms array to localStorage
   localStorage.setItem('jokeSearchTerms', JSON.stringify(searchTerms));
+  // Render success message
+  renderFeedbackMessage('success', 'Term was added to memory')
 }
 
 const removeTermFromLocalStorage = (term) => {
@@ -59,7 +61,7 @@ const getRandomDadJoke = () => {
     .catch(error => {
       console.log(error);
       // Render error message
-      renderErrorMessage('Couldn\'t get a random joke');
+      renderFeedbackMessage('error', 'Couldn\'t get a random joke');
     })
 }
 
@@ -90,12 +92,12 @@ const searchDadJokes = (event) => {
   // Check if term input is empty and return with message
   if (!term) {
     // Render error message
-    renderErrorMessage('You didn\'t enter any terms');
+    renderFeedbackMessage('error', 'You didn\'t enter any terms');
     // Exit function
     return;
   } else if (termsSearched.includes(term)) {
     // Else if terms searched array includes term, render error message
-    renderErrorMessage('Term was already searched');
+    renderFeedbackMessage('error', 'Term was already searched');
   } else {
     // Else add term to array for searches this session
     termsSearched.push(term);
@@ -118,7 +120,7 @@ const getSearchedJokes = (term) => {
       // Check if results are empty and return with message
       if (!data.results.length) {
         // Render error message
-        renderErrorMessage('No jokes found for that term');
+        renderFeedbackMessage('error', 'No jokes found for that term');
         // Exit function
         return;
       }
@@ -131,13 +133,13 @@ const getSearchedJokes = (term) => {
       // If results aren't empty, render jokes
       renderJokeList(term, data.results);
       // Scroll to newly rendered jokes
-      document.querySelector(`#${term}`).scrollIntoView();
+      document.querySelector(`#${term}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
     })
     // Catch error if fetch fails
     .catch(error => {
       console.log(error);
       // Render error message
-      renderErrorMessage('Failure retrieving jokes');
+      renderFeedbackMessage('error', 'Failure retrieving jokes');
     })
 }
 
@@ -176,7 +178,7 @@ const searchPreviousTerm = (event) => {
       getSearchedJokes(term);
     } else {
       // Else terms searched array includes term, so render error message
-      renderErrorMessage('Term was already searched');
+      renderFeedbackMessage('error', 'Term was already searched');
     }
     // Change button display to none
     targetClicked.classList.add('display-none');
@@ -185,6 +187,8 @@ const searchPreviousTerm = (event) => {
     term = targetClicked.parentNode.dataset.term;
     // Else we assume the 'X' was clicked and remove that term from local storage
     removeTermFromLocalStorage(term);
+    // Render success message
+    renderFeedbackMessage('success', 'Term removed from memory')
     // Change parent button display to none
     targetClicked.parentNode.classList.add('display-none');
   }
@@ -237,13 +241,22 @@ const renderListItem = (joke, heading = false) => {
   jokeListElem.append(liElem);
 }
 
-//// Render error messages function
+//// Render feedback messages function
 
-const renderErrorMessage = (message) => {
+const renderFeedbackMessage = (type, message) => {
+  // Initialize variables and set icon and color based on type
+  let icon, color;
+  if (type === 'success') {
+    icon = 'check_circle';
+    color = 'green darken-2';
+  } else if (type === 'error') {
+    icon = 'warning';
+    color = 'pink darken-1';
+  }
   // Use a Materialize CSS toast component to render error message
   M.toast({
-    html: `<i class="material-icons left">warning</i> ${message}`,
-    classes: 'pink darken-2',
+    html: `<i class="material-icons left">${icon}</i> ${message}`,
+    classes: color,
     displayLength: 2000
   })
 }
