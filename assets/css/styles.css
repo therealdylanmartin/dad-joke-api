@@ -1,6 +1,8 @@
 html {
   box-sizing: border-box;
   height: 100%;
+  /* Enable smooth scrolling on the whole document */
+  scroll-behavior: smooth;
 }
 
 *, *:before, *:after {
@@ -74,7 +76,7 @@ footer>h6 {
 }
 
 .search-jokes {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 #search_input {
@@ -88,18 +90,36 @@ footer>h6 {
 }
 
 .pill-btn__box {
-  margin-top: -51px;
+  margin-top: 0;
+  max-width: 100%;
 }
 
 .pill-btn__box>.btn-small {
   border-radius: 16px;
+  margin: 0 6px 8px 0;
   padding: 0 12px;
-}
-
-.pill-btn__box>.btn-small:not(:last-child) {
-  margin-right: 6px;
 }
 
 .pill-btn__box i.right {
   margin-left: 10px;
+}
+
+#joke_list>li>h4 {
+  font-family: 'Fredoka One', "Comic Sans MS", "Chalkboard SE", "Comic Neue";
+  letter-spacing: .02em;
+}
+
+/* Media queries */
+
+@media only screen and (min-width: 768px) {
+  .pill-btn__box {
+    margin-top: -50px;
+    max-width: calc(100% - 240px);
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  html {
+    font-size: 65%;
+  }
 }
