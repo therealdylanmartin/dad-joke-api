@@ -17,6 +17,8 @@ let searchTerms = [];
 
 //////////////////////// Functions
 
+//// Local storage functions
+
 const getLocalStorageTerms = () => {
   // Get local storage terms
   const localStorageTerms = localStorage.getItem('jokeSearchTerms');
@@ -41,6 +43,8 @@ const removeTermFromLocalStorage = (term) => {
   localStorage.setItem('jokeSearchTerms', JSON.stringify(searchTerms));
 }
 
+//// Random dad joke functions
+
 const getRandomDadJoke = () => {
   // Fetch random dad joke, necassary to set headers to accept json
   fetch(randomJokeEndpoint, { headers: { 'Accept': 'application/json' } })
@@ -49,7 +53,15 @@ const getRandomDadJoke = () => {
     // Render the random joke
     .then(data => renderRandomJoke(data.joke))
     // Catch error if fetch fails
-    .catch(error => console.log(error))
+    .catch(error => {
+      console.log(error);
+      // Use a Materialize CSS toast component to render error message
+      M.toast({
+        html: '<i class="material-icons left">warning</i> Couldn\'t get a random joke',
+        classes: 'pink darken-2',
+        displayLength: 2000
+      });
+    })
 }
 
 const renderRandomJoke = (joke) => {
@@ -68,6 +80,8 @@ const getAnotherRandomJoke = () => {
   getRandomDadJoke();
 }
 
+//// Search dad jokes functions
+
 const searchDadJokes = (event) => {
   // prevent default form submitting behavior
   event.preventDefault();
@@ -76,7 +90,13 @@ const searchDadJokes = (event) => {
 
   // Check if term input is empty and return with message
   if (!term) {
-    window.alert('You didn\'t enter any terms!');
+    // Use a Materialize CSS toast component to render error message
+    M.toast({
+      html: '<i class="material-icons left">warning</i> You didn\'t enter any terms!',
+      classes: 'pink darken-2',
+      displayLength: 2000
+    });
+    // Exit function
     return;
   }
 
@@ -97,7 +117,13 @@ const getSearchedJokes = (term) => {
     .then(data => {
       // Check if results are empty and return with message
       if (!data.results.length) {
-        window.alert('No jokes for that term!');
+        // Use a Materialize CSS toast component to render error message
+        M.toast({
+          html: '<i class="material-icons left">warning</i> No jokes found for that term',
+          classes: 'pink darken-2',
+          displayLength: 2000
+        });
+        // Exit function
         return;
       }
 
@@ -110,7 +136,15 @@ const getSearchedJokes = (term) => {
       renderJokeList(data.results);
     })
     // Catch error if fetch fails
-    .catch(error => console.log(error))
+    .catch(error => {
+      console.log(error);
+      // Use a Materialize CSS toast component to render error message
+      M.toast({
+        html: '<i class="material-icons left">warning</i> Failure retrieving jokes',
+        classes: 'pink darken-2',
+        displayLength: 2000
+      });
+    })
 }
 
 const renderTermBtns = () => {
