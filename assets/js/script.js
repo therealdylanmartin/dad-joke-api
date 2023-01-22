@@ -15,6 +15,9 @@ const jokeListElem = document.getElementById('joke_list');
 // Initialize global array for local storage terms
 let searchTerms = [];
 
+// Initialize global array for terms used this session
+let termsSearched = [];
+
 //////////////////////// Functions
 
 //// Local storage functions
@@ -92,14 +95,27 @@ const searchDadJokes = (event) => {
   if (!term) {
     // Use a Materialize CSS toast component to render error message
     M.toast({
-      html: '<i class="material-icons left">warning</i> You didn\'t enter any terms!',
+      html: '<i class="material-icons left">warning</i> You didn\'t enter any terms',
       classes: 'pink darken-2',
       displayLength: 2000
-    });
+    })
+    // Exit function
+    return;
+  } else if (termsSearched.includes(term)) {
+    // Else if terms searched array includes term, render error message
+    M.toast({
+      html: '<i class="material-icons left">warning</i> That term was already searched',
+      classes: 'pink darken-2',
+      displayLength: 2000
+    })
+    // Empty the input
+    searchInputElem.value = '';
     // Exit function
     return;
   }
 
+  // Add term to array for searches this session
+  termsSearched.push(term);
   // Fetch jokes based on searched term
   getSearchedJokes(term);
   // Empty the input
@@ -174,8 +190,20 @@ const searchPreviousTerm = (event) => {
   if (targetClicked.matches('button')) {
     // Set term to data attribute
     term = targetClicked.dataset.term;
-    // Fetch jokes based on term
-    getSearchedJokes(term);
+    // Check if 
+    if (!termsSearched.includes(term)) {
+      // Add term to array for searches this session
+      termsSearched.push(term);
+      // Fetch jokes based on term
+      getSearchedJokes(term);
+    } else {
+      // Else terms searched array includes term, so render error message
+      M.toast({
+        html: '<i class="material-icons left">warning</i> That term was already searched',
+        classes: 'pink darken-2',
+        displayLength: 2000
+      })
+    }
     // Change button display to none
     targetClicked.classList.add('display-none');
   } else {
