@@ -18,9 +18,6 @@ let searchTerms = [];
 // Initialize global array for terms used this session
 let termsSearched = [];
 
-// Initialize global array for terms used this session
-let termsSearched = [];
-
 //////////////////////// Functions
 
 //// Local storage functions
@@ -99,8 +96,6 @@ const searchDadJokes = (event) => {
   } else if (termsSearched.includes(term)) {
     // Else if terms searched array includes term, render error message
     renderErrorMessage('That term was already searched');
-    // Empty the input
-    searchInputElem.value = '';
   } else {
     // Add term to array for searches this session
     termsSearched.push(term);
