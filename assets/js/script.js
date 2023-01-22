@@ -95,9 +95,9 @@ const searchDadJokes = (event) => {
     return;
   } else if (termsSearched.includes(term)) {
     // Else if terms searched array includes term, render error message
-    renderErrorMessage('That term was already searched');
+    renderErrorMessage('Term was already searched');
   } else {
-    // Add term to array for searches this session
+    // Else add term to array for searches this session
     termsSearched.push(term);
     // Fetch jokes based on searched term
     getSearchedJokes(term);
@@ -129,7 +129,9 @@ const getSearchedJokes = (term) => {
         addTermToLocalStorage(term);
       }
       // If results aren't empty, render jokes
-      renderJokeList(data.results);
+      renderJokeList(term, data.results);
+      // Scroll to newly rendered jokes
+      document.querySelector(`#${term}`).scrollIntoView();
     })
     // Catch error if fetch fails
     .catch(error => {
@@ -145,7 +147,7 @@ const renderTermBtns = () => {
     // Initialize empty button element 
     const buttonElem = document.createElement('button');
     // Add Materialize CSS classes to the button
-    buttonElem.setAttribute('class', 'btn-small pink lighten-3 teal-text text-darken-2');
+    buttonElem.setAttribute('class', 'btn-small pink lighten-3 teal-text text-darken-2 right');
     // Add data attribute to store term info
     buttonElem.dataset.term = term;
     // Set the inner HTML with term text and a 'close' icon
@@ -174,7 +176,7 @@ const searchPreviousTerm = (event) => {
       getSearchedJokes(term);
     } else {
       // Else terms searched array includes term, so render error message
-      renderErrorMessage('That term was already searched');
+      renderErrorMessage('Term was already searched');
     }
     // Change button display to none
     targetClicked.classList.add('display-none');
@@ -188,7 +190,9 @@ const searchPreviousTerm = (event) => {
   }
 }
 
-const renderJokeList = (jokesArray) => {
+const renderJokeList = (term, jokesArray) => {
+  // Run term through render function, with heading argument provided
+  renderListItem(term, true);
   // Map through joke objects, deconstructing 'joke' property
   jokesArray.map(({ joke }) => {
     // Run joke through render function
@@ -196,20 +200,38 @@ const renderJokeList = (jokesArray) => {
   })
 }
 
-const renderListItem = (joke) => {
+const renderListItem = (joke, heading = false) => {
   // Initialize empty li element 
   const liElem = document.createElement('li');
   // Add Materialize CSS class for styling
   liElem.classList.add('collection-item');
 
-  // Initialize empty h5 element 
-  const h5Elem = document.createElement('h5');
-  // Add Materialize CSS class for styling
-  h5Elem.classList.add('teal-text');
-  // Use the incoming joke as text content
-  h5Elem.textContent = joke;
-  // Append h5 to li
-  liElem.append(h5Elem);
+  // Check if heading variable entered
+  if (heading) {
+    // Switch 'joke' to 'term' variable for clarity
+    const term = joke;
+    // Create variable to capitalize term
+    const capitalizedTerm = `${term[0].toUpperCase()}${term.slice(1, term.length)}`;
+    // Initialize empty h3 element 
+    const h4Elem = document.createElement('h4');
+    // Add Materialize CSS class for styling
+    h4Elem.classList.add('teal-text');
+    // Use the incoming term as text content
+    h4Elem.id = term;
+    // Use the incoming term as text content
+    h4Elem.textContent = `${capitalizedTerm} Jokes`;
+    // Append h4 to li
+    liElem.append(h4Elem);
+  } else {
+    // Initialize empty h5 element 
+    const h5Elem = document.createElement('h5');
+    // Add Materialize CSS class for styling
+    h5Elem.classList.add('teal-text');
+    // Use the incoming joke as text content
+    h5Elem.textContent = joke;
+    // Append h5 to li
+    liElem.append(h5Elem);
+  }
 
   // Render random joke in joke list ul element
   jokeListElem.append(liElem);
