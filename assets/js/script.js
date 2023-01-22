@@ -18,6 +18,9 @@ let searchTerms = [];
 // Initialize global array for terms used this session
 let termsSearched = [];
 
+// Initialize global array for terms used this session
+let termsSearched = [];
+
 //////////////////////// Functions
 
 //// Local storage functions
