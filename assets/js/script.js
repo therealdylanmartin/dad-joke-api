@@ -58,12 +58,8 @@ const getRandomDadJoke = () => {
     // Catch error if fetch fails
     .catch(error => {
       console.log(error);
-      // Use a Materialize CSS toast component to render error message
-      M.toast({
-        html: '<i class="material-icons left">warning</i> Couldn\'t get a random joke',
-        classes: 'pink darken-2',
-        displayLength: 2000
-      });
+      // Render error message
+      renderErrorMessage('Couldn\'t get a random joke');
     })
 }
 
@@ -93,31 +89,19 @@ const searchDadJokes = (event) => {
 
   // Check if term input is empty and return with message
   if (!term) {
-    // Use a Materialize CSS toast component to render error message
-    M.toast({
-      html: '<i class="material-icons left">warning</i> You didn\'t enter any terms',
-      classes: 'pink darken-2',
-      displayLength: 2000
-    })
+    // Render error message
+    renderErrorMessage('You didn\'t enter any terms');
     // Exit function
     return;
   } else if (termsSearched.includes(term)) {
     // Else if terms searched array includes term, render error message
-    M.toast({
-      html: '<i class="material-icons left">warning</i> That term was already searched',
-      classes: 'pink darken-2',
-      displayLength: 2000
-    })
-    // Empty the input
-    searchInputElem.value = '';
-    // Exit function
-    return;
+    renderErrorMessage('That term was already searched');
+  } else {
+    // Add term to array for searches this session
+    termsSearched.push(term);
+    // Fetch jokes based on searched term
+    getSearchedJokes(term);
   }
-
-  // Add term to array for searches this session
-  termsSearched.push(term);
-  // Fetch jokes based on searched term
-  getSearchedJokes(term);
   // Empty the input
   searchInputElem.value = '';
 }
@@ -133,12 +117,8 @@ const getSearchedJokes = (term) => {
     .then(data => {
       // Check if results are empty and return with message
       if (!data.results.length) {
-        // Use a Materialize CSS toast component to render error message
-        M.toast({
-          html: '<i class="material-icons left">warning</i> No jokes found for that term',
-          classes: 'pink darken-2',
-          displayLength: 2000
-        });
+        // Render error message
+        renderErrorMessage('No jokes found for that term');
         // Exit function
         return;
       }
@@ -154,12 +134,8 @@ const getSearchedJokes = (term) => {
     // Catch error if fetch fails
     .catch(error => {
       console.log(error);
-      // Use a Materialize CSS toast component to render error message
-      M.toast({
-        html: '<i class="material-icons left">warning</i> Failure retrieving jokes',
-        classes: 'pink darken-2',
-        displayLength: 2000
-      });
+      // Render error message
+      renderErrorMessage('Failure retrieving jokes');
     })
 }
 
@@ -198,11 +174,7 @@ const searchPreviousTerm = (event) => {
       getSearchedJokes(term);
     } else {
       // Else terms searched array includes term, so render error message
-      M.toast({
-        html: '<i class="material-icons left">warning</i> That term was already searched',
-        classes: 'pink darken-2',
-        displayLength: 2000
-      })
+      renderErrorMessage('That term was already searched');
     }
     // Change button display to none
     targetClicked.classList.add('display-none');
@@ -241,6 +213,17 @@ const renderListItem = (joke) => {
 
   // Render random joke in joke list ul element
   jokeListElem.append(liElem);
+}
+
+//// Render error messages function
+
+const renderErrorMessage = (message) => {
+  // Use a Materialize CSS toast component to render error message
+  M.toast({
+    html: `<i class="material-icons left">warning</i> ${message}`,
+    classes: 'pink darken-2',
+    displayLength: 2000
+  })
 }
 
 //////////////////////// Event Listeners
