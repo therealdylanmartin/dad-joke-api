@@ -15,6 +15,9 @@ const jokeListElem = document.getElementById('joke_list');
 // Initialize global array for local storage terms
 let searchTerms = [];
 
+// Initialize global array for terms used this session
+let termsSearched = [];
+
 //////////////////////// Functions
 
 //// Local storage functions
@@ -87,13 +90,20 @@ const searchDadJokes = (event) => {
   // Check if term input is empty and return with message
   if (!term) {
     // Render error message
-    renderErrorMessage('You didn\'t enter any terms!');
+    renderErrorMessage('You didn\'t enter any terms');
     // Exit function
     return;
+  } else if (termsSearched.includes(term)) {
+    // Else if terms searched array includes term, render error message
+    renderErrorMessage('That term was already searched');
+    // Empty the input
+    searchInputElem.value = '';
+  } else {
+    // Add term to array for searches this session
+    termsSearched.push(term);
+    // Fetch jokes based on searched term
+    getSearchedJokes(term);
   }
-
-  // Fetch jokes based on searched term
-  getSearchedJokes(term);
   // Empty the input
   searchInputElem.value = '';
 }
@@ -127,7 +137,7 @@ const getSearchedJokes = (term) => {
     .catch(error => {
       console.log(error);
       // Render error message
-      renderErrorMessage('Failure retrieving jokes')
+      renderErrorMessage('Failure retrieving jokes');
     })
 }
 
@@ -158,8 +168,16 @@ const searchPreviousTerm = (event) => {
   if (targetClicked.matches('button')) {
     // Set term to data attribute
     term = targetClicked.dataset.term;
-    // Fetch jokes based on term
-    getSearchedJokes(term);
+    // Check if 
+    if (!termsSearched.includes(term)) {
+      // Add term to array for searches this session
+      termsSearched.push(term);
+      // Fetch jokes based on term
+      getSearchedJokes(term);
+    } else {
+      // Else terms searched array includes term, so render error message
+      renderErrorMessage('That term was already searched');
+    }
     // Change button display to none
     targetClicked.classList.add('display-none');
   } else {
