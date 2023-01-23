@@ -2,9 +2,9 @@
 
 ## Description
 
-Dad Laffs is a celebration of terrible dad jokes, but more importantly it is a landing page for searching dad jokes!
+Dad Laffs is a celebration of dads everywhere, but more importantly is a landing page for searching terrible dad jokes!
 
-- I created this application as an example project for beginning developers wanting to learn more about APIs
+- I created this application as an example project for beginning developers wanting to learn more about server-side APIs
 - Check out the [icanhazdadjoke API documentation](https://icanhazdadjoke.com/api) for more information on endpoint used.
 - Highly recommend testing your endpoints with [Postman](https://www.postman.com/) if you haven't before. Just make sure to set headers to 'Accept': 'application/json' when calling fetch()
 
